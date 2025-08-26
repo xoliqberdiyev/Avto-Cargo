@@ -13,6 +13,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
     'jazzmin',
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,3 +119,11 @@ EMAIL_PORT = env.str('EMAIL_PORT')
 EMAIL_USE_TLS = env.str('EMAIL_USE_TLS')
 
 from config.conf import *
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+LANGUAGES = (
+    ('uz', 'Uzbek'),
+    ('en', 'English'),
+    ('ru', 'Russian'),
+)   
+MODELTRANSLATION_LANGUAGES = ('uz', 'en', 'ru')
