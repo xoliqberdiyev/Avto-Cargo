@@ -138,7 +138,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://avtocargo.felixits.uz",
+    "https://acargo.felixits.uz",
     'http://localhost:8002',
     'http://127.0.0.1:8002',
 ]
