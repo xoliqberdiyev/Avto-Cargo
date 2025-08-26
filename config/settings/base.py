@@ -128,3 +128,17 @@ LANGUAGES = (
     ('ru', 'Russian'),
 )   
 MODELTRANSLATION_LANGUAGES = ('uz', 'en', 'ru')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', env.str("SWAGGER_PROTOCOL", 'https'))
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    'https://uyqur.vercel.app'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://avtocargo.felixits.uz",
+    'http://localhost:8002',
+    'http://127.0.0.1:8002',
+]
