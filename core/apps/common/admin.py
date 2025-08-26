@@ -49,6 +49,11 @@ class AboutUsAdmin(TranslationAdmin):
     list_display = ['title', 'description']
     inlines = [AboutUsImageInline, AboutUsFeatureInline]
     
+    def has_add_permission(self, request):
+        if self.model.objects.count() > 0:
+            return False
+        return True
+
 
 @admin.register(models.Service)
 class ServiceAdmin(TranslationAdmin):

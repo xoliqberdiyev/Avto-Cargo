@@ -29,7 +29,8 @@ urlpatterns = [
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('api/v1/', include(
       [
-         path('accounts/', include('core.apps.accounts.urls'))     
+         path('accounts/', include('core.apps.accounts.urls')),     
+         path('common/', include('core.apps.common.urls')),
       ]
    ))
 ]
