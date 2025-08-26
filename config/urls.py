@@ -31,6 +31,7 @@ urlpatterns = [
       [
          path('accounts/', include('core.apps.accounts.urls')),     
          path('common/', include('core.apps.common.urls')),
+         path('orders/', include('core.apps.orders.urls')),
       ]
    ))
 ]

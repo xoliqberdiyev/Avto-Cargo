@@ -1,3 +1,16 @@
-from django.shortcuts import render
+from rest_framework import generics, permissions
+from rest_framework.response import Response
 
-# Create your views here.
+from core.apps.orders import serializers, models
+
+
+class OrderListApiView(generics.GenericAPIView):
+    serializer_class = serializers.OrderListSerializer
+    queryset = models.Order.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        orders = models.Order.objects.filter(user=user)
+        serializer = self.serializer_class(orders, many=True)
+        return Response(serializer.data, status=200)
