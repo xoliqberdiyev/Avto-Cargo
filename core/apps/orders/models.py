@@ -2,6 +2,7 @@ from django.db import models
 
 from core.apps.common.models import BaseModel
 from core.apps.accounts.models import User
+from core.apps.common.models import Country
 
 
 class Order(BaseModel):
@@ -21,20 +22,11 @@ class Order(BaseModel):
     total_price = models.PositiveBigIntegerField()
     is_paid = models.BooleanField(default=False)
     location = models.CharField(max_length=200)
-    location_to = models.CharField(max_length=200, null=True)
-    location_from = models.CharField(max_length=200, null=True)
+    location_to = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, related_name='location_to')
+    location_from = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, related_name='location_from')
 
     def __str__(self):
         return f'{self.user} user order {self.name}'
-    
-    def save(self, *args, **kwargs):
-        if not self.order_number:
-            last_order = Order.objects.all().order_by('-order_number').first()
-            if last_order:
-                self.order_number = last_order.order_number + 1
-            else:
-                self.order_number = 1
-        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name = 'Buyurtma'

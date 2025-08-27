@@ -1,5 +1,5 @@
 import hashlib
-
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,7 +7,6 @@ from rest_framework import status
 from core.apps.orders.models import Order
 
 API_KEY = "ATMOS_API_KEY"  
-ALLOWED_ATMOS_IPS = ["185.8.212.47"]
 
 
 def get_client_ip(request):
@@ -25,7 +24,7 @@ class AtmosCallbackApiView(APIView):
 
     def post(self, request):
         client_ip = get_client_ip(request)
-        if client_ip not in ALLOWED_ATMOS_IPS:
+        if client_ip not in settings.ALLOWED_ATMOS_IPS:
             return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
         data = request.data
         if not data:

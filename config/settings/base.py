@@ -140,3 +140,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8002',
     'http://127.0.0.1:8002',
 ]
+
+ALLOWED_ATMOS_IPS = []
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''

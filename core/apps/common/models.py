@@ -123,3 +123,14 @@ class SiteConfig(BaseModel):
     class Meta:
         verbose_name = 'sayt sozlamalari'
         verbose_name_plural = 'sayt sozlamalari'
+
+
+class Country(BaseModel):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Davlat'
+        verbose_name_plural = 'Davlatlar'
