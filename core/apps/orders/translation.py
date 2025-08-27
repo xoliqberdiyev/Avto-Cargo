@@ -6,5 +6,5 @@ from core.apps.orders.models import Order
 @translator.register(Order)
 class OrderTranslation(translator.TranslationOptions):
     fields = [
-        'name', 'location'
+        'name', 'location', 'location_to', 'location_from'
     ]
