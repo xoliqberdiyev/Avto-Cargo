@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from core.apps.common import models, serializers
+from core.apps.payment.views import get_client_ip
 
 
 class SiteConfigApiView(generics.GenericAPIView):
