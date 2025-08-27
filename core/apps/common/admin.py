@@ -73,3 +73,8 @@ class ContactUsAdmin(admin.ModelAdmin):
 @admin.register(models.News)
 class NewsAdmin(TranslationAdmin):
     list_display = ['title', 'text', 'image']
+
+
+@admin.register(models.Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ['name']
