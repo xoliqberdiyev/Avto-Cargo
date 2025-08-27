@@ -50,7 +50,7 @@ class AtmosCallbackApiView(APIView):
             )
 
         try:
-            order = Order.objects.get(id=invoice)
+            order = Order.objects.get(order_number=invoice)
         except Order.DoesNotExist:
             return Response(
                 {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
