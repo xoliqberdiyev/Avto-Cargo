@@ -8,8 +8,8 @@ from core.apps.common import models
 
 
 @admin.register(models.Banner)
-class BannerAdmin(admin.ModelAdmin):
-    list_display = ['banner']
+class BannerAdmin(TranslationAdmin):
+    list_display = ['banner', 'title', 'text']
 
 
 @admin.register(models.SiteConfig)

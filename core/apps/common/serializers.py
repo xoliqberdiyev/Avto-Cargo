@@ -42,7 +42,7 @@ class BannerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Banner
         fields = [
-            'id', 'banner'
+            'id', 'banner', 'title', 'text'
         ]
 
 

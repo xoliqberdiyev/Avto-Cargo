@@ -3,6 +3,13 @@ from modeltranslation import translator
 from core.apps.common import models
 
 
+@translator.register(models.Banner)
+class BannerTranslation(translator.TranslationOptions):
+    fields = [
+        'title', 'text' 
+    ]
+    
+
 @translator.register(models.AboutUs)
 class AboutUsTranslation(translator.TranslationOptions):
     fields = [

@@ -12,6 +12,8 @@ class BaseModel(models.Model):
 
 
 class Banner(BaseModel):
+    title = models.CharField(max_length=200, null=True)
+    text = models.TextField(null=True)
     banner = models.ImageField(upload_to='banner/images/')
 
     def __str__(self):
