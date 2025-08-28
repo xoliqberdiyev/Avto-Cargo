@@ -1,12 +1,15 @@
 import hashlib
+
 from django.conf import settings
+
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
 from core.apps.orders.models import Order
-
-API_KEY = "ATMOS_API_KEY"  
+from core.apps.payment.serializers import PaymentSerializer
+from core.services.payment import Atmos
 
 
 def get_client_ip(request):
@@ -24,8 +27,8 @@ class AtmosCallbackApiView(APIView):
 
     def post(self, request):
         client_ip = get_client_ip(request)
-        if client_ip not in settings.ALLOWED_ATMOS_IPS:
-            return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
+        # if client_ip not in settings.ALLOWED_ATMOS_IPS:
+        #     return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
         data = request.data
         if not data:
             return Response(
@@ -39,7 +42,7 @@ class AtmosCallbackApiView(APIView):
         amount = data.get("amount")
         sign = data.get("sign")
 
-        check_string = f"{store_id}{transaction_id}{invoice}{amount}{API_KEY}"
+        check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.CONSUMER_KEY}"
         generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
 
         if generated_sign != sign:
@@ -69,3 +72,19 @@ class AtmosCallbackApiView(APIView):
             {"status": 1, "message": "Успешно"},
             status=status.HTTP_200_OK
         )
+
+
+class PaymentGenerateLinkApiView(GenericAPIView):
+    serializer_class = PaymentSerializer
+    queryset = None
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid()
+        data = serializer.validated_data
+        service = Atmos()
+        res = service.create_transaction(data['price'], data['order_number'])
+        print(res)
+        return Response(res)
+

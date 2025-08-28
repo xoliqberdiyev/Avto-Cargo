@@ -1,13 +1,14 @@
-import requests
-import base64
+import requests, base64
+
+from django.conf import settings
 
 
 class Atmos:
-    def __init__(self, consumer_key, consumer_secret, terminal_id, store_id):
-        self.consumer_key = consumer_key
-        self.consumer_secret = consumer_secret
+    def __init__(self, terminal_id = None):
+        self.consumer_key = settings.CONSUMER_KEY
+        self.consumer_secret = settings.CONSUMER_SECRET
         self.terminal_id = terminal_id
-        self.store_id = store_id
+        self.store_id = settings.STORE_ID
     
     def login(self):
         credentials = f"{self.consumer_key}:{self.consumer_secret}"
@@ -34,20 +35,24 @@ class Atmos:
         url = 'https://apigw.atmos.uz/merchant/pay/create'
         headers = {
             'Authorization': f'Bearer {access_token}',
-            'Content-Type': 'application/json',
         }
         data = {
             'amount': amount,
-            'account': account,
-            'terminal_id': self.terminal_id,
+            'account': str(account),
             'store_id': self.store_id
         }
 
-        res = requests.post(url, headers=headers, data=data)
-        if res.json()['result']['code'] == 'OK':
-            return res.json()
-        else:
-            return None
+        res = requests.post(url, headers=headers, json=data)
+        print(self.store_id)
+        return res.json()
+        # try:
+        #     data = res.json()
+        # except Exception as e:
+        #     raise ValueError(f"Invalid JSON response: {res.text}") from e
+
+        # if data.get('result', {}).get('code') == 'OK':
+        #     return data
+        # return None
     
     def generate_url(self, transaction_id, redirect_url):
         url = f'https://test-checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
