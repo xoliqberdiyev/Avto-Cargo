@@ -39,11 +39,10 @@ class Atmos:
         data = {
             'amount': amount,
             'account': str(account),
-            'store_id': self.store_id
+            'store_id': f'{self.store_id}'
         }
 
         res = requests.post(url, headers=headers, json=data)
-        print(self.store_id)
         return res.json()
         # try:
         #     data = res.json()
@@ -55,9 +54,13 @@ class Atmos:
         # return None
     
     def generate_url(self, transaction_id, redirect_url):
-        url = f'https://test-checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
-
-        res = requests.get(url)
+        url = f'http://test-checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
+        access_token = self.login()
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+        }
+        print(url)
+        res = requests.post(url, headers=headers)
         return res.json()
 
     
