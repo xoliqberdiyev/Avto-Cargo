@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from core.apps.accounts import serializers
 from core.apps.accounts import models
 from core.apps.accounts.cache import cache_user_credentials, cache_user_confirmation_code
-from core.apps.accounts.tasks import send_confirmation_code_to_email
+from core.apps.accounts.tasks import send_confirmation_email
 
 
 class RegisterApiView(generics.GenericAPIView):
@@ -28,7 +28,7 @@ class RegisterApiView(generics.GenericAPIView):
             cache_user_confirmation_code(
                 email=email, code=code, time=60*5
             )
-            send_confirmation_code_to_email.delay(email, code)
+            send_confirmation_email.delay(email, code)
             return Response(
                 {'success': True, 'message': "code sent"},
                 status=200
