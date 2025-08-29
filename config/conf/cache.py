@@ -18,7 +18,17 @@ CACHEOPS = {
     "accounts.*": {
         "ops": "all", 
         "timeout": 60 * 5,
-    },   
+    },
+    "payment.*": {
+        "ops": "all", 
+        "timeout": 60 * 5,
+    },"common.*": {
+        "ops": "all", 
+        "timeout": 60 * 5,
+    },"orders.*": {
+        "ops": "all", 
+        "timeout": 60 * 5,
+    },
 }
 CACHEOPS_DEGRADE_ON_FAILURE = True
 CACHEOPS_ENABLED = True
