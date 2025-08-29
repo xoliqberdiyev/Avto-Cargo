@@ -22,17 +22,14 @@ class Atmos:
         data = {
             "grant_type": "client_credentials"
         }
-        url = 'https://apigw.atmos.uz/token'
+        url = 'https://partner.atmos.uz/token'
         res = requests.post(url, headers=headers, data=data)
-        if 'access_token' in res.json():
-            return res.json()['access_token']
-        else:
-            return None
+        return res.json()['access_token']
     
     def create_transaction(self, amount, account):
         access_token = self.login()
-        
-        url = 'https://apigw.atmos.uz/merchant/pay/create'
+
+        url = 'https://partner.atmos.uz/merchant/pay/create'
         headers = {
             'Authorization': f'Bearer {access_token}',
         }
@@ -44,23 +41,9 @@ class Atmos:
 
         res = requests.post(url, headers=headers, json=data)
         return res.json()
-        # try:
-        #     data = res.json()
-        # except Exception as e:
-        #     raise ValueError(f"Invalid JSON response: {res.text}") from e
-
-        # if data.get('result', {}).get('code') == 'OK':
-        #     return data
-        # return None
     
     def generate_url(self, transaction_id, redirect_url):
         url = f'http://test-checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
-        access_token = self.login()
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-        }
-        print(url)
-        res = requests.post(url, headers=headers)
-        return res.json()
+        return url
 
     

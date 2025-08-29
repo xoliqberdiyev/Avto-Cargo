@@ -42,7 +42,7 @@ class AtmosCallbackApiView(APIView):
         amount = data.get("amount")
         sign = data.get("sign")
 
-        check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.CONSUMER_KEY}"
+        check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
         generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
 
         if generated_sign != sign:
@@ -81,10 +81,14 @@ class PaymentGenerateLinkApiView(GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response({'success': False, 'message': serializer.errors}, status=400)
         data = serializer.validated_data
         service = Atmos()
         res = service.create_transaction(data['price'], data['order_number'])
         link = service.generate_url(res['transaction_id'], 'http://site.com')
-        return Response(link)
+        return Response(
+            {"success": True, "url": link},
+            status=200
+        )
 
