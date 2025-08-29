@@ -6,7 +6,7 @@ from core.apps.orders import serializers, models
 
 class OrderListApiView(generics.GenericAPIView):
     serializer_class = serializers.OrderListSerializer
-    queryset = models.Order.objects.all()
+    queryset = models.Order.objects.select_related('location_to', 'location_from')
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
