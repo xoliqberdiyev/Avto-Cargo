@@ -10,7 +10,6 @@ class OrderListApiView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        user = request.user
-        orders = models.Order.objects.filter(user=user)
+        orders = models.Order.objects.filter(user=request.user)
         serializer = self.serializer_class(orders, many=True)
         return Response(serializer.data, status=200)
