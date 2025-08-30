@@ -1,4 +1,7 @@
 from django.db import transaction
+from django.contrib.auth import authenticate
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from rest_framework import serializers
 
@@ -35,7 +38,6 @@ class ConfirmUserSerializer(serializers.Serializer):
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError('User with this email already exists')
         user_data = get_user_credentials(email=data.get('email'))
-        print(user_data)
         if not user_data:
             raise serializers.ValidationError("User with this email not found")
         confirm_data = get_user_confirmation_code(data['email'], data['code'])
@@ -56,3 +58,20 @@ class ConfirmUserSerializer(serializers.Serializer):
             user.save()
             return user
         
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = "email"
+
+    def validate(self, attrs):
+        email = attrs.get("email", "").lower()
+        password = attrs.get("password")
+        user = authenticate(
+            request=self.context.get("request"),
+            email=email,
+            password=password
+        )
+        if not user:
+            raise serializers.ValidationError("Invalid email or password")
+
+        attrs["email"] = email
+        return super().validate(attrs)

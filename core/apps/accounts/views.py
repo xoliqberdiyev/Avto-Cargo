@@ -4,6 +4,7 @@ from rest_framework import generics, views
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from core.apps.accounts import serializers
 from core.apps.accounts import models
@@ -52,3 +53,7 @@ class ConfirmUserApiView(generics.GenericAPIView):
             {'success': False, 'error_message': serializer.errors},
             status=400
         )
+    
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = serializers.CustomTokenObtainPairSerializer
