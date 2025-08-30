@@ -7,17 +7,23 @@ from core.apps.accounts.cache import get_user_credentials, get_user_confirmation
 
 
 class RegisterSerializer(serializers.Serializer):
-    passport_id = serializers.CharField()
-    pnfl = serializers.CharField()
+    passport_id = serializers.CharField(required=False)
+    pnfl = serializers.CharField(required=False)
     email = serializers.EmailField()
     password = serializers.CharField()
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("User with this email already exists")
-        user_data = get_user_credentials(email=value)
-        if user_data:
-            raise serializers.ValidationError("User with this email already exists")
+            request = self.context.get('request')
+            lang = request.META.get('HTTP_ACCEPT_LANGUAGE', 'en').split(",")[0]
+
+            messages = {
+                'en': "User with this email already exists",
+                'ru': "Пользователь с таким адресом электронной почты уже существует",
+                'uz': "Bu email bilan foydalanuvchi allaqachon mavjud",
+            }
+            msg = messages.get(lang, messages['en'])
+            raise serializers.ValidationError(msg)
         return value
     
 
