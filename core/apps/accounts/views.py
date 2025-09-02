@@ -23,7 +23,7 @@ class RegisterApiView(generics.GenericAPIView):
             email = data['email']
             cache_user_credentials(
                 email=email, password=data['password'],
-                passport_id=data['passport_id'], pnfl=data['pnfl'], time=60*5
+                passport_id=data.get('passport_id'), pnfl=data.get('pnfl'), time=60*5
             )
             code = ''.join([str(random.randint(0, 100)%10) for _ in range(5)])
             cache_user_confirmation_code(
