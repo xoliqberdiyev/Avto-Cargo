@@ -8,13 +8,13 @@ def cache_user_credentials(email, password, passport_id, pnfl, time):
     r.hset(key, mapping={
         "email": email,
         "password": password,
-        "passport_id": passport_id,
-        "pnfl": pnfl,
+        "passport_id": passport_id or "",
+        "pnfl": pnfl or "",
     })
 
     r.expire(key, time)
 
-
+c
 def get_user_credentials(email):
     key = f"user_credentials:{email}"
     data = r.hgetall(key)
