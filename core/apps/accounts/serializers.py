@@ -16,6 +16,7 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate_email(self, value):
+        value = value.lower()
         if User.objects.filter(email=value).exists():
             request = self.context.get('request')
             lang = request.META.get('HTTP_ACCEPT_LANGUAGE', 'en').split(",")[0]
