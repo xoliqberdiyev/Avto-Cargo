@@ -86,7 +86,7 @@ class PaymentGenerateLinkApiView(GenericAPIView):
         data = serializer.validated_data
         service = Atmos()
         res = service.create_transaction(data['price'], data['order_number'])
-        link = service.generate_url(res['transaction_id'], 'http://site.com')
+        link = service.generate_url(res['transaction_id'], 'https://wisdom.uz')
         return Response(
             {"success": True, "url": link},
             status=200
