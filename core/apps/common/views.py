@@ -44,3 +44,18 @@ class ContactUsApiView(generics.CreateAPIView):
     serializer_class = serializers.ContactUsSerializer
     queryset = models.ContactUs.objects.all()
     
+
+class RequisiteApiView(generics.GenericAPIView):
+    serializer_class = serializers.RequisiteSerializer
+    queryset = models.Requisite.objects.all()
+
+    def get(self, request):
+        queryset = models.Requisite.objects.first()
+        serializer = self.serializer_class(queryset)
+        return Response(serializer.data)
+    
+
+class PrivacyPolicyListApiView(generics.ListAPIView):
+    queryset = models.PrivacyPolicy.objects.all()
+    serializer_class = serializers.PrivacyPolicySerializer
+    

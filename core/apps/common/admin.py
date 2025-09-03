@@ -78,3 +78,14 @@ class NewsAdmin(TranslationAdmin):
 @admin.register(models.Country)
 class CountryAdmin(admin.ModelAdmin):
     list_display = ['name']
+
+
+@admin.register(models.Requisite)
+class Requisite(TranslationAdmin):
+    list_display = ['company_name', 'legal_address', 'tin', 'okpo']
+
+
+@admin.register(models.PrivacyPolicy)
+class Requisite(TranslationAdmin):
+    list_display = ['title', 'text']
+    

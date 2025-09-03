@@ -67,3 +67,19 @@ class ContactUsSerializer(serializers.ModelSerializer):
             'first_name', 'last_name', 'phone', 'email', 'service', 'message',
         ]
     
+
+class RequisiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Requisite
+        fields = [
+            'id', 'company_name', 'legal_address', 'tin', 'okpo', 'oked', 'bank_name', 'bank_code',
+            'uzs', 'usd',
+        ]
+
+
+class PrivacyPolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PrivacyPolicy
+        fields = [
+            'id', 'title', 'text'
+        ]

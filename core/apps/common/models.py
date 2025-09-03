@@ -136,3 +136,34 @@ class Country(BaseModel):
     class Meta:
         verbose_name = 'Davlat'
         verbose_name_plural = 'Davlatlar'
+
+    
+class Requisite(BaseModel):
+    company_name = models.CharField(max_length=200)
+    legal_address = models.CharField(max_length=200)
+    tin = models.CharField(max_length=15)
+    okpo = models.CharField(max_length=10)
+    oked = models.CharField(max_length=10)
+    bank_name = models.CharField(max_length=200)
+    bank_code = models.CharField(max_length=15)
+    uzs = models.PositiveBigIntegerField()
+    usd = models.PositiveBigIntegerField()
+
+    def __str__(self):
+        return self.company_name
+
+    class Meta:
+        verbose_name = 'korxona rekvizit'
+        verbose_name_plural = 'korxona rekvizitlar'
+    
+
+class PrivacyPolicy(BaseModel):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Maxfiylik siyosati'
+        verbose_name_plural = 'Maxfiylik siyosati'

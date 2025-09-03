@@ -36,3 +36,17 @@ class NewsTranslation(translator.TranslationOptions):
     fields = [
         'title', 'text'
     ]
+
+
+@translator.register(models.Requisite)
+class RequisiteTranslation(translator.TranslationOptions):
+    fields = [
+        'company_name', 'legal_address'
+    ]
+
+
+@translator.register(models.PrivacyPolicy)
+class RequisiteTranslation(translator.TranslationOptions):
+    fields = [
+        'title', 'text'
+    ]
