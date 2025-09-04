@@ -167,3 +167,14 @@ class PrivacyPolicy(BaseModel):
     class Meta:
         verbose_name = 'Maxfiylik siyosati'
         verbose_name_plural = 'Maxfiylik siyosati'
+
+
+class UserTerms(BaseModel):
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text
+    
+    class Meta:
+        verbose_name = 'Foydalanuvchi shartlari'
+        verbose_name_plural = 'Foydalanuvchi shartlari'

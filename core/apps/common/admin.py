@@ -81,11 +81,15 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Requisite)
-class Requisite(TranslationAdmin):
+class RequisiteAdmin(TranslationAdmin):
     list_display = ['company_name', 'legal_address', 'tin', 'okpo']
 
 
 @admin.register(models.PrivacyPolicy)
-class Requisite(TranslationAdmin):
+class PrivacyPolicyAdmin(TranslationAdmin):
     list_display = ['title', 'text']
     
+
+@admin.register(models.UserTerms)
+class UserTermsAdmin(TranslationAdmin):
+    list_display = ['text']

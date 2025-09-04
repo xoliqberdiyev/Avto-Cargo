@@ -50,3 +50,10 @@ class RequisiteTranslation(translator.TranslationOptions):
     fields = [
         'title', 'text'
     ]
+
+
+@translator.register(models.UserTerms)
+class UserTermsTranslation(translator.TranslationOptions):
+    fields = [
+        'text'
+    ]

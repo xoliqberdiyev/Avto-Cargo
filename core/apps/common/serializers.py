@@ -83,3 +83,11 @@ class PrivacyPolicySerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'text'
         ]
+
+
+class UserTermsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserTerms
+        fields = [
+            'id', 'text'
+        ]

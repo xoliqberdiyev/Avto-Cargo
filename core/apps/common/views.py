@@ -59,3 +59,8 @@ class PrivacyPolicyListApiView(generics.ListAPIView):
     queryset = models.PrivacyPolicy.objects.all()
     serializer_class = serializers.PrivacyPolicySerializer
     
+
+class UserTermsListApiView(generics.ListAPIView):
+    queryset = models.UserTerms.objects.all()
+    serializer_class = serializers.UserTermsSerializer
+    

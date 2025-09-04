@@ -11,4 +11,5 @@ urlpatterns = [
     path('contact_us/', views.ContactUsApiView.as_view()),
     path('requisite/', views.RequisiteApiView.as_view()),
     path('privacy_policy/', views.PrivacyPolicyListApiView.as_view()),
+    path('user_terms/', views.UserTermsListApiView.as_view()),
 ]
