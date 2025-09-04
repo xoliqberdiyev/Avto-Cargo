@@ -30,6 +30,7 @@ class AtmosCallbackApiView(APIView):
         # if client_ip not in settings.ALLOWED_ATMOS_IPS:
         #     return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
         data = request.data
+        print(data)
         if not data:
             return Response(
                 {'success': 0, "message": "Request body required"},
@@ -44,7 +45,7 @@ class AtmosCallbackApiView(APIView):
 
         check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
         generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
-
+        print(generated_sign, '----------------------------------------------------')
         if generated_sign != sign:
             return Response(
                 {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
@@ -67,7 +68,7 @@ class AtmosCallbackApiView(APIView):
 
         order.is_paid = True
         order.save()
-
+        
         return Response(
             {"status": 1, "message": "Успешно"},
             status=status.HTTP_200_OK
