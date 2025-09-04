@@ -29,46 +29,46 @@ class AtmosCallbackApiView(APIView):
         client_ip = get_client_ip(request)
         # if client_ip not in settings.ALLOWED_ATMOS_IPS:
         #     return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
-        data = request.data
-        print(data)
-        if not data:
-            return Response(
-                {'success': 0, "message": "Request body required"},
-                status=status.HTTP_200_OK
-            )
+        # data = request.data
+        # print(data)
+        # if not data:
+        #     return Response(
+        #         {'success': 0, "message": "Request body required"},
+        #         status=status.HTTP_200_OK
+        #     )
 
-        store_id = data.get("store_id")
-        transaction_id = data.get("transaction_id")
-        invoice = data.get("invoice")
-        amount = data.get("amount")
-        sign = data.get("sign")
+        # store_id = data.get("store_id")
+        # transaction_id = data.get("transaction_id")
+        # invoice = data.get("invoice")
+        # amount = data.get("amount")
+        # sign = data.get("sign")
 
-        check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
-        generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
-        print(generated_sign, '----------------------------------------------------')
-        if generated_sign != sign:
-            return Response(
-                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-                status=status.HTTP_200_OK
-            )
+        # check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
+        # generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
+        # print(generated_sign, '----------------------------------------------------')
+        # if generated_sign != sign:
+        #     return Response(
+        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+        #         status=status.HTTP_200_OK
+        #     )
 
-        try:
-            order = Order.objects.get(order_number=invoice)
-        except Order.DoesNotExist:
-            return Response(
-                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-                status=status.HTTP_200_OK
-            )
+        # try:
+        #     order = Order.objects.get(order_number=invoice)
+        # except Order.DoesNotExist:
+        #     return Response(
+        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+        #         status=status.HTTP_200_OK
+        #     )
 
-        if str(order.total_price) != str(amount):
-            return Response(
-                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-                status=status.HTTP_200_OK
-            )
+        # if str(order.total_price) != str(amount):
+        #     return Response(
+        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+        #         status=status.HTTP_200_OK
+        #     )
 
-        order.is_paid = True
-        order.save()
-        
+        # order.is_paid = True
+        # order.save()
+
         return Response(
             {"status": 1, "message": "Успешно"},
             status=status.HTTP_200_OK
