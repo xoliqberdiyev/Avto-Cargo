@@ -1,4 +1,7 @@
 import hashlib
+import logging
+
+logger = logging.getLogger(__name__)
 
 from django.conf import settings
 
@@ -41,22 +44,26 @@ class AtmosCallbackApiView(APIView):
         invoice = data.get("invoice")
         amount = data.get("amount")
         sign = data.get("sign")
+        logger.info(f"Atmos yuborgan SIGN: {sign}")
 
         check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
         generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
+        logger.info(f"Biz generatsiya qilgan SIGN: {generated_sign}")
+
+
         if generated_sign != sign:
             return Response(
                 {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
                 status=status.HTTP_200_OK
             )
 
-        # try:
-        #     order = Order.objects.get(order_number=invoice)
-        # except Order.DoesNotExist:
-        #     return Response(
-        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-        #         status=status.HTTP_200_OK
-        #     )
+        try:
+            order = Order.objects.get(order_number=invoice)
+        except Order.DoesNotExist:
+            return Response(
+                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+                status=status.HTTP_200_OK
+            )
 
         # if str(order.total_price) != str(amount):
         #     return Response(
