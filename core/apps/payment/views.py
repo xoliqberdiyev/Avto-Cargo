@@ -48,7 +48,7 @@ class AtmosCallbackApiView(APIView):
         print("Atmos yuborgan SIGN:", sign)
 
         check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
-        generated_sign = hashlib.sha256(check_string.encode()).hexdigest()
+        generated_sign = hashlib.sha256(check_string.encode())
         logger.info(f"Biz generatsiya qilgan SIGN: {generated_sign}")
         print("Biz generatsiya qilgan SIGN:", generated_sign)
 
