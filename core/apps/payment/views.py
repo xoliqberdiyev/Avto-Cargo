@@ -50,19 +50,19 @@ class AtmosCallbackApiView(APIView):
                 status=status.HTTP_200_OK
             )
 
-        try:
-            order = Order.objects.get(order_number=invoice)
-        except Order.DoesNotExist:
-            return Response(
-                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-                status=status.HTTP_200_OK
-            )
+        # try:
+        #     order = Order.objects.get(order_number=invoice)
+        # except Order.DoesNotExist:
+        #     return Response(
+        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+        #         status=status.HTTP_200_OK
+        #     )
 
-        if str(order.total_price) != str(amount):
-            return Response(
-                {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-                status=status.HTTP_200_OK
-            )
+        # if str(order.total_price) != str(amount):
+        #     return Response(
+        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
+        #         status=status.HTTP_200_OK
+        #     )
 
         order.is_paid = True
         order.save()
