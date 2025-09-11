@@ -34,7 +34,7 @@ class Atmos:
             'Authorization': f'Bearer {access_token}',
         }
         data = {
-            'amount': int(amount),
+            'amount': int(amount) * 100,
             'account': str(account),
             'store_id': f'{self.store_id}'
         }
