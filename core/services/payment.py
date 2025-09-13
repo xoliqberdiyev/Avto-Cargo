@@ -83,8 +83,8 @@ class Atmos:
         }
 
         res = requests.post(url=url, headers=headers, json=data, proxies={
-            'http': 'http://94.230.232.47:8080',
-            'https': 'http://94.230.232.47:8080',
+            'http': 'socks5h://127.0.0.1:10800',
+            'https': 'socks5h://127.0.0.1:10800',
         })
         if res.status_code == 200:
             return res.json()
