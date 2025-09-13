@@ -1,7 +1,5 @@
 import hashlib
-import logging
-
-logger = logging.getLogger(__name__)
+import uuid
 
 from django.conf import settings
 
@@ -11,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 
 from core.apps.orders.models import Order
-from core.apps.payment.serializers import PaymentSerializer
+from core.apps.payment.serializers import PaymentSerializer, VisaPaymentSerializer
 from core.services.payment import Atmos
 
 
@@ -44,15 +42,9 @@ class AtmosCallbackApiView(APIView):
         invoice = data.get("invoice")
         amount = data.get("amount")
         sign = data.get("sign")
-        logger.info(f"Atmos yuborgan SIGN: {sign}")
-        print("Atmos yuborgan SIGN:", sign)
 
         check_string = f"{store_id}{transaction_id}{invoice}{amount}{settings.API_KEY}"
-        print(check_string)
         generated_sign = hashlib.md5(check_string.encode()).hexdigest()
-        logger.info(f"Biz generatsiya qilgan SIGN: {generated_sign}")
-        print("Biz generatsiya qilgan SIGN:", generated_sign)
-
 
         if generated_sign != sign:
             return Response(
@@ -67,12 +59,6 @@ class AtmosCallbackApiView(APIView):
                 {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
                 status=status.HTTP_200_OK
             )
-
-        # if str(order.total_price) != str(amount):
-        #     return Response(
-        #         {"status": 0, "message": f"Инвойс с номером {invoice} отсутствует в системе"},
-        #         status=status.HTTP_200_OK
-        #     )
 
         order.is_paid = True
         order.save()
@@ -101,3 +87,21 @@ class PaymentGenerateLinkApiView(GenericAPIView):
             status=200
         )
 
+
+class VisaMastercardPaymentApiView(GenericAPIView):
+    queryset = None
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = VisaPaymentSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response({'success': False, 'message': serializer.errors}, status=400)
+        data = serializer.validated_data
+        service = Atmos()
+        res = service.global_payment(
+            account=data.get('order_number'),
+            request_id=str(uuid.uuid4()),
+            amount=data.get('amount'),
+        )
+        return Response(res)
