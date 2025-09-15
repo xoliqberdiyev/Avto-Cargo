@@ -84,6 +84,6 @@ class Atmos:
 
         res = requests.post(url=url, headers=headers, json=data)
         if res.status_code == 200:
-            return res.json()
+            return res.json()['url']
         else:
             return res.json()

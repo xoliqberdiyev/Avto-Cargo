@@ -104,4 +104,4 @@ class VisaMastercardPaymentApiView(GenericAPIView):
             request_id=str(uuid.uuid4()),
             amount=data.get('amount'),
         )
-        return Response(res)
+        return Response({'success': True, 'link': res})
