@@ -82,10 +82,7 @@ class Atmos:
             "success_url": "https://wisdom.uz",
         }
 
-        res = requests.post(url=url, headers=headers, json=data, proxies={
-            'http': 'socks5h://127.0.0.1:10800',
-            'https': 'socks5h://127.0.0.1:10800',
-        })
+        res = requests.post(url=url, headers=headers, json=data)
         if res.status_code == 200:
             return res.json()
         else:
