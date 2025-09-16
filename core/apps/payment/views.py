@@ -1,6 +1,9 @@
 import hashlib
 import uuid
 
+from payme.views import PaymeWebHookAPIView, PaymeTransactions
+from payme import Payme
+
 from django.conf import settings
 
 from rest_framework.generics import GenericAPIView
@@ -9,17 +12,18 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 
 from core.apps.orders.models import Order
-from core.apps.payment.serializers import PaymentSerializer, VisaPaymentSerializer
+from core.apps.payment.serializers import PaymentSerializer, VisaPaymentSerializer, PaymeSerializer
 from core.services.payment import Atmos
 
+payme = Payme(settings.PAYME_ID)
 
-def get_client_ip(request):
-    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(",")[0]
-    else:
-        ip = request.META.get("REMOTE_ADDR")
-    return ip
+# def get_client_ip(request):
+#     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+#     if x_forwarded_for:
+#         ip = x_forwarded_for.split(",")[0]
+#     else:
+#         ip = request.META.get("REMOTE_ADDR")
+#     return ip
 
 
 class AtmosCallbackApiView(APIView):
@@ -27,7 +31,7 @@ class AtmosCallbackApiView(APIView):
     permission_classes = []
 
     def post(self, request):
-        client_ip = get_client_ip(request)
+        # client_ip = get_client_ip(request)
         # if client_ip not in settings.ALLOWED_ATMOS_IPS:
         #     return Response({"status": 0, "message": "IP ruxsat etilmagan"}, status=403)
         data = request.data
@@ -105,3 +109,57 @@ class VisaMastercardPaymentApiView(GenericAPIView):
             amount=data.get('amount'),
         )
         return Response({'success': True, 'link': res})
+
+
+
+
+class PaymeCallBackAPIView(PaymeWebHookAPIView):
+    def handle_created_payment(self, params, result, *args, **kwargs):
+        """
+        Handle the successful payment. You can override this method
+        """
+        print(f"Transaction created for this params: {params} and cr_result: {result}")
+
+    def handle_successfully_payment(self, params, result, *args, **kwargs):
+        """
+        Handle the successful payment. You can override this method
+        """
+        transaction = PaymeTransactions.get_by_transaction_id(
+            transaction_id=params['id']
+        )
+        order = Order.objects.get(id=transaction.id)
+        order.is_paid = True
+        order.save()
+        print(f"Transaction successfully performed for this params: {params} and performed_result: {result}")
+
+    def handle_cancelled_payment(self, params, result, *args, **kwargs):
+        """
+        Handle the cancelled payment. You can override this method
+        """
+        transaction = PaymeTransactions.get_by_transaction_id(
+            transaction_id=params['id']
+        )
+        if transaction.state == PaymeTransactions.CANCELED:
+            order = Order.objects.get(id=transaction.id)
+            order.is_paid = False
+            order.save()
+        print(f"Transaction cancelled for this params: {params} and cancelled_result: {result}")
+    
+
+class PayPaymeApiView(GenericAPIView):
+    serializer_class = PaymeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Order.objects.all()
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            order_id = serializer.validated_data.get('order_id')
+            order = Order.objects.get(id=order_id)
+            payment_link = payme.initializer.generate_pay_link(
+                id=order_id,
+                amount=order.total_price * 100,
+                return_url="https://wisdom.uz",
+            )
+        
+        return Response({'success': True, 'link': payment_link}, status=200)

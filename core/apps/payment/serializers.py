@@ -21,3 +21,12 @@ class VisaPaymentSerializer(serializers.Serializer):
         if not Order.objects.filter(order_number=value).exists():
             raise serializers.ValidationError("Order not found")
         return value
+
+
+class PaymeSerializer(serializers.Serializer):
+    order_id = serializers.UUIDField()
+
+    def validate_order_id(self, value):
+        if not Order.objects.filter(id=value).exists():
+            raise serializers.ValidationError("order not found")
+        return value

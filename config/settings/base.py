@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'payme',
     # apps
     'core.apps.accounts',
     'core.apps.orders',
@@ -148,3 +149,12 @@ CONSUMER_KEY = env.str('CONSUMER_KEY')
 CONSUMER_SECRET = env.str('CONSUMER_SECRET')
 STORE_ID = env.str('STORE_ID')
 API_KEY = env.str('API_KEY')
+
+
+PAYME_ID = env.str('PAYME_ID')
+PAYME_KEY = env.str('PAYME_KEY')
+PAYME_ACCOUNT_FIELD = "order_number"
+PAYME_AMOUNT_FIELD = "total_price"
+PAYME_ACCOUNT_MODEL = "core.apps.orders.models.Order"
+PAYME_ONE_TIME_PAYMENT = True
+PAYME_ACCOUNT_FIELD_TYPE = "int"

@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAdminUser
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from core.apps.payment.views import PaymeCallBackAPIView
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -34,7 +36,8 @@ urlpatterns = [
          path('orders/', include('core.apps.orders.urls')),
          path('payment/', include('core.apps.payment.urls')),
       ]
-   ))
+   )),
+   path('payment/update/', PaymeCallBackAPIView.as_view()),
 ]
 
 
