@@ -43,7 +43,9 @@ class Atmos:
         return res.json()
     
     def generate_url(self, transaction_id, redirect_url):
-        url = f'https://checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
+        # url = f'https://checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
+        url = f'http://test-checkout.pays.uz/invoice/get?storeId={self.store_id}&transactionId={transaction_id}&redirectLink={redirect_url}'
+        
         return url
 
 
