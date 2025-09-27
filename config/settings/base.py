@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'payme',
+    "ckeditor",
     # apps
     'core.apps.accounts',
     'core.apps.orders',
@@ -158,3 +159,12 @@ PAYME_AMOUNT_FIELD = "total_price"
 PAYME_ACCOUNT_MODEL = "core.apps.orders.models.Order"
 PAYME_ONE_TIME_PAYMENT = True
 PAYME_ACCOUNT_FIELD_TYPE = "int"
+
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "height": 300,
+        "width": "100%",
+    }
+}
