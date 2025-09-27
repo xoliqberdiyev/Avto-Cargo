@@ -32,6 +32,7 @@ class Banner(BaseModel):
 class AboutUs(BaseModel):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    full_text = models.TextField(null=True)
 
     def __str__(self):
         return self.title
@@ -67,6 +68,7 @@ class Service(BaseModel):
     text = models.TextField()
     icon = models.ImageField(upload_to='service/icons/')
     image = models.ImageField(upload_to='service/images/')
+    full_text = models.TextField(null=True)
 
     def __str__(self):
         return self.title
@@ -104,6 +106,7 @@ class News(BaseModel):
     image = models.ImageField(unique='news/images/')
     title = models.CharField(max_length=300)
     text = models.TextField()
+    full_text = models.TextField(null=True)
 
     def __str__(self):
         return self.title

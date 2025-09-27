@@ -13,7 +13,7 @@ class BannerTranslation(translator.TranslationOptions):
 @translator.register(models.AboutUs)
 class AboutUsTranslation(translator.TranslationOptions):
     fields = [
-        'title', 'description',
+        'title', 'description', 'full_text'
     ]
 
 
@@ -27,14 +27,14 @@ class AboutUsFeatureTranslation(translator.TranslationOptions):
 @translator.register(models.Service)
 class ServiceTranslation(translator.TranslationOptions):
     fields = [
-        'title', 'text',
+        'title', 'text', 'full_text'
     ]
 
 
 @translator.register(models.News)
 class NewsTranslation(translator.TranslationOptions):
     fields = [
-        'title', 'text'
+        'title', 'text', 'full_text'
     ]
 
 

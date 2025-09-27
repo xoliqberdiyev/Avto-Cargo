@@ -34,7 +34,7 @@ class AboutUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AboutUs
         fields = [
-            'id', 'title', 'description', 'images', 'features' 
+            'id', 'title', 'description', 'full_text', 'images', 'features'
         ]
 
 
@@ -50,14 +50,14 @@ class ServiceListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Service
         fields = [
-            'id', 'title', 'text', 'icon', 'image',
+            'id', 'title', 'text', 'icon', 'image', 'full_text'
         ]
 
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.News
-        fields = ['id', 'image', 'title', 'text']
+        fields = ['id', 'image', 'title', 'text', 'full_text']
     
 
 class ContactUsSerializer(serializers.ModelSerializer):
